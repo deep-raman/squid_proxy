@@ -1,8 +1,10 @@
 squid_port: 3128
 local_net: 192.168.200.0/24
+squid_conf: /etc/squid/squid.conf
 htpasswd_file: /etc/squid/htpasswd
 allowed_ports:
   - 80
   - 22
+allowed_ssl_ports:
   - 443
 
