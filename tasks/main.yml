@@ -21,3 +21,8 @@
     name: squid
     state: started
     enabled: yes
+
+- import_tasks: configure_squid.yml
+  tags:
+    - configure_squid
+
