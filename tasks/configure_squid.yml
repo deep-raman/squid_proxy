@@ -1,0 +1,62 @@
+- name: Remove default acl's
+  lineinfile:
+    path: "{{ squid_conf }}"
+    regexp: '^acl localnet'
+    state: absent
+
+- name: Remove default allowed ports
+  lineinfile:
+    path: "{{ squid_conf }}"
+    regexp: '^acl Safe_ports'
+    state: absent
+
+- name: Add acl to update new local network
+  lineinfile:
+    path: "{{ squid_conf }}"
+    line: "acl mylocalnet src {{ local_net }}"
+    insertafter: '^# should be allowed'
+    state: present
+
+- name: Add new allowed ports
+  lineinfile:
+    path: "{{ squid_conf }}"
+    line: "acl mySafe_ports port {{ item }}"
+    insertbefore: '^acl CONNECT'
+    state: present
+  with_items: "{{ allowed_ports }}"
+
+- name: Add new allowed ssl ports
+  lineinfile:
+    path: "{{ squid_conf }}"
+    line: "acl mySSL_ports port {{ item }}"
+    insertbefore: '^acl CONNECT'
+    state: present
+  with_items: "{{ allowed_ssl_ports }}"
+
+- name: Allow access to the allowed ports
+  lineinfile:
+    path: "{{ squid_conf }}"
+    regexp: '!Safe_ports'
+    line: 'http_access deny !mySafe_ports'
+    state: present
+    
+- name: Allow access to the allowed ssl ports
+  lineinfile:
+    path: "{{ squid_conf }}"
+    regexp: '!mySSL_ports'
+    line: 'http_access deny !mySSL_ports'
+    state: present
+
+- name: Allow access to new local network
+  lineinfile:
+    path: "{{ squid_conf }}"
+    regexp: '^http_access allow localnet'
+    line: 'http_access allow mylocalnet'
+    state: present
+
+- name: Change squid listening port
+  lineinfile:
+    path: "{{ squid_conf }}"
+    regexp: '^http_port'
+    line: "http_port {{ squid_port }}"
+    state: present 
