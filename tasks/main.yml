@@ -1,0 +1,23 @@
+- name: Install epel repository
+  yum:
+    name: epel-release
+    state: present
+    update_cache: yes
+
+- name: Install httpd-tools package
+  yum:
+    name: httpd-tools
+    state: present
+    update_cache: yes
+
+- name: Install squid package
+  yum:
+    name: squid
+    state: present
+    update_cache: yes
+
+- name: Enable and start squid service
+  systemd:
+    name: squid
+    state: started
+    enabled: yes
