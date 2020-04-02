@@ -10,6 +10,12 @@
     regexp: '^acl Safe_ports'
     state: absent
 
+- name: Remove default allowed ssl ports
+  lineinfile:
+    path: "{{ squid_conf }}"
+    regexp: '^acl SSL_ports'
+    state: absent
+    
 - name: Add acl to update new local network
   lineinfile:
     path: "{{ squid_conf }}"
@@ -37,14 +43,14 @@
   lineinfile:
     path: "{{ squid_conf }}"
     regexp: '!Safe_ports'
-    line: 'http_access deny !mySafe_ports'
+    line: 'http_access allow mySafe_ports'
     state: present
     
 - name: Allow access to the allowed ssl ports
   lineinfile:
     path: "{{ squid_conf }}"
-    regexp: '!mySSL_ports'
-    line: 'http_access deny !mySSL_ports'
+    regexp: '!SSL_ports'
+    line: 'http_access allow mySSL_ports'
     state: present
 
 - name: Allow access to new local network
@@ -59,4 +65,5 @@
     path: "{{ squid_conf }}"
     regexp: '^http_port'
     line: "http_port {{ squid_port }}"
-    state: present 
+    state: present
+
