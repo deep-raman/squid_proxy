@@ -1,0 +1,6 @@
+- name: Restart squid
+  systemd:
+    name: squid
+    state: restarted
+  when: squid_conf.changed
+
