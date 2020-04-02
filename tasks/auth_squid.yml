@@ -1,0 +1,25 @@
+- name: Create proxy user
+  htpasswd:
+    path: "{{ htpasswd_file }}"
+    name: "{{ proxy_user }}"
+    password: "{{ proxy_pass }}"
+    owner: squid
+    group: squid
+    mode: 0600
+    state: present
+
+- name: Set squid configuration for authentication
+  blockinfile:
+    dest: "{{ squid_conf }}"
+    insertafter: "^acl CONNECT"
+    marker: "#{mark} SQUID : ANSIBLE MANAGED BLOCK"
+    state: present
+    block: |
+      auth_param basic program /usr/lib64/squid/basic_ncsa_auth {{ htpasswd_file }}
+      auth_param basic children 5
+      auth_param basic realm Squid Basic Authentication
+      auth_param basic credentialsttl 2 hours
+      acl auth_users proxy_auth REQUIRED
+      http_access allow auth_users
+  notify:
+    - Restart squid

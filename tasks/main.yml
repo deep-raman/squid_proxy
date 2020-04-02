@@ -25,4 +25,11 @@
 - import_tasks: configure_squid.yml
   tags:
     - configure_squid
+  notify:
+    - Restart squid
 
+- import_tasks: auth_squid.yml
+  when: set_auth == True
+  tags:
+    - configure_auth
+    
