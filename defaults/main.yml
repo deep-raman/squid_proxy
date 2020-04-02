@@ -5,6 +5,7 @@ htpasswd_file: /etc/squid/htpasswd
 proxy_user: batraman
 proxy_pass: myproxypass
 set_auth: yes
+anonymize: yes
 allowed_ports:
   - 80
   - 22
