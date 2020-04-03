@@ -1,7 +1,7 @@
 - name: Make squid to anonymize traffic
   blockinfile:
     dest: "{{ squid_conf }}"
-    inserbefore: "^# Example rule"
+    insertbefore: "^# Example rule"
     marker: "#{mark} SQUID : ANSIBLE MANAGED BLOCK"
     state: present
     backup: yes
