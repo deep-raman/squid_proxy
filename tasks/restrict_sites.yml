@@ -29,7 +29,7 @@
   lineinfile:
     dest: "{{ squid_conf }}"
     line: 'http_access deny restrictedsites'
-    insertbefore: '^http_access allow mylocalnet'
+    insertbefore: '^http_access allow mySafe_ports'
     state: present
   notify:
     - Restart squid
