@@ -16,6 +16,8 @@ allowed_ssl_ports:
   - 443
 
 restricted_sites: |
+  .fbsbx.com
+  .fbcdn.net
   .youtube.com
   .facebook.com
   .netflix.com
