@@ -24,9 +24,11 @@
 - name: Add acl to update new local network
   lineinfile:
     path: "{{ squid_conf }}"
-    line: "acl mylocalnet src {{ local_net }}"
+    line: "acl mylocalnet src {{ item }}"
     insertafter: '^# should be allowed'
     state: present
+  with_items:
+    - "{{ local_net }}"
 
 - name: Add new allowed ports
   lineinfile:
