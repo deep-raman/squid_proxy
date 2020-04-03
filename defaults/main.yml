@@ -2,13 +2,20 @@ squid_port: 3128
 local_net: 192.168.200.0/24
 squid_conf: /etc/squid/squid.conf
 htpasswd_file: /etc/squid/htpasswd
+restricted_sites_file: /etc/squid/restricted-sites.squid
 proxy_user: batraman
 proxy_pass: myproxypass
 set_auth: yes
 anonymize: yes
+restrict_sites: yes
 allowed_ports:
   - 80
   - 22
+
 allowed_ssl_ports:
   - 443
 
+restricted_sites: |
+  .youtube.com
+  .facebook.com
+  .netflix.com

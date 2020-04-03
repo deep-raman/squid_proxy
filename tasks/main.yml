@@ -37,4 +37,8 @@
   when: anonymize == True
   tags:
     - anonymize
-    
+
+- import_tasks: restrict_sites.yml
+  when: restrict_sites == True
+  tags:
+    - restrict_sites

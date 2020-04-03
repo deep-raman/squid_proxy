@@ -1,0 +1,36 @@
+- name: Create restricted sites file
+  file:
+    path: "{{ restricted_sites_file }}"
+    owner: squid
+    group: squid
+    mode: 0600
+    state: touch
+
+- name: Add restricted sites to the file
+  blockinfile:
+    dest: "{{ restricted_sites_file }}"
+    marker: "#{mark} SQUID : ANSIBLE MANAGED BLOCK"
+    state: present
+    backup: yes
+    block: |
+      {{ restricted_sites }}
+      
+- name: Import restricted sites to the squid configuration
+  lineinfile:
+    dest: "{{ squid_conf }}"
+    line: "acl restrictedsites dstdomain \"{{ restricted_sites_file }}\""
+    insertafter: '^acl mySSL_ports'
+    state: present
+    backup: yes
+  notify:
+    - Restart squid
+
+- name: Deny access to the restricted sites
+  lineinfile:
+    dest: "{{ squid_conf }}"
+    line: 'http_access deny restrictedsites'
+    insertbefore: '^http_access allow mylocalnet'
+    state: present
+  notify:
+    - Restart squid
+   
