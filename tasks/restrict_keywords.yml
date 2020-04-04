@@ -1,0 +1,35 @@
+- name: Create restricted keywords file
+  file:
+    path: "{{ restrict_keyword_file }}"
+    owner: squid
+    group: squid
+    mode: 0600
+    state: touch
+
+- name: Add restricted sites to the file
+  blockinfile:
+    dest: "{{ restrict_keyword_file }}"
+    marker: "#{mark} SQUID : ANSIBLE MANAGED BLOCK"
+    state: present
+    backup: yes
+    block: |
+      {{ restricted_keywords }}
+
+- name: Import restricted keywords file to the squid configuration
+  lineinfile:
+    dest: "{{ squid_conf }}"
+    line: "acl restrictkeywords url_regex \"{{ restrict_keyword_file }}\""
+    insertafter: '^acl restrictedsites'
+    state: present
+    backup: yes
+  notify:
+    - Restart squid
+
+- name: Deny access to the restricted keywords
+  lineinfile:
+    dest: "{{ squid_conf }}"
+    line: 'http_access deny restrictkeywords'
+    insertbefore: '^http_access allow mySafe_ports'
+    state: present
+  notify:
+    - Restart squid
