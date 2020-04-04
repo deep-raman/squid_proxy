@@ -13,6 +13,7 @@ proxy_pass: myproxypass
 set_auth: yes
 anonymize: yes
 restrict_sites: yes
+restrict_keywords: yes
 allowed_ports:
   - 80
   - 22
