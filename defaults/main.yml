@@ -7,6 +7,7 @@ local_net:
 squid_conf: /etc/squid/squid.conf
 htpasswd_file: /etc/squid/htpasswd
 restricted_sites_file: /etc/squid/restricted-sites.squid
+restrict_keyword_file: /etc/squid/restrict-keywords.squid
 proxy_user: batraman
 proxy_pass: myproxypass
 set_auth: yes
@@ -25,3 +26,8 @@ restricted_sites: |
   .youtube.com
   .facebook.com
   .netflix.com
+
+restricted_keywords: |
+  ads
+  movie
+  gamble

@@ -42,3 +42,8 @@
   when: restrict_sites == True
   tags:
     - restrict_sites
+
+- import_tasks: restrict_keywords.yml
+  when: restricted_keywords == True
+  tags:
+    - restrict_keywords
