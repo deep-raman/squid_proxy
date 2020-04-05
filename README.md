@@ -78,7 +78,7 @@ The following required packages are automatically installed be the ansible role 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
