@@ -10,6 +10,12 @@
     state: present
     update_cache: yes
 
+- name: Install python-passlib package
+  yum:
+    name: python-passlib
+    state: present
+    update_cache: yes
+
 - name: Install squid package
   yum:
     name: squid
@@ -47,3 +53,4 @@
   when: restrict_keywords == True
   tags:
     - restrict_keywords
+
